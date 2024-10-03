@@ -1,0 +1,57 @@
+import json
+from pymongo import MongoClient
+from bson import ObjectId
+
+# Función personalizada para serializar ObjectId
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)  # Convertimos ObjectId a string
+        return super().default(o)
+
+def connect_to_mongo():
+    client = MongoClient("mongodb+srv://mrasnik:matias1234@prueba.iwcws.mongodb.net/?retryWrites=true&w=majority&appName=prueba")
+    db = client['prueba']
+    return db
+
+def lambda_handler(event, context):
+    db = connect_to_mongo()
+    collection_usuarios = db['usuarios']
+    
+    body = json.loads(event.get('body'))
+    usuario = collection_usuarios.find_one({"mail": body.get('mail')}) 
+
+    if usuario:
+        if body.get('password') == usuario["password"]:
+            usuario.pop('password', None)
+            return {
+                'statusCode' : 200,
+                'headers': {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                },
+                 'body': json.dumps({
+                    "message": "Log in exitoso",
+                    "succes": True,
+                    "userType": usuario["tipo"],
+                    "user": usuario  
+                }, cls=JSONEncoder)  
+            }
+        else:
+            return {
+                'statusCode' : 400,
+                'headers': {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                },
+                'body': json.dumps({"message": "Contraseña incorrecta", "succes": False})
+            }
+    else:
+        return {
+                'statusCode' : 404,
+                'headers': {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                },
+                'body': json.dumps({"message": "Usuario no encontrado", "succes": False})
+            }
