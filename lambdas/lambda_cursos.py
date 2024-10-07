@@ -2,10 +2,11 @@ import json
 from pymongo import MongoClient
 from bson import ObjectId
 from datetime import datetime
+import os
 
-# Conexión a MongoDB
 def connect_to_mongo():
-    client = MongoClient("mongodb+srv://mrasnik:matias1234@prueba.iwcws.mongodb.net/?retryWrites=true&w=majority&appName=prueba")
+    mongo_uri = os.getenv('MONGODB_URI')
+    client = MongoClient(mongo_uri)
     db = client['prueba']
     return db
 
