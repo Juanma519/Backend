@@ -15,6 +15,6 @@ def test_lambda(payload):
 # Prueba de creación de usuario
 payload_get_salones = {
     "accion": "get_salones",
-    "nombre": "Universidad de Montevideo"
+    "universidad": "Universidad de Montevideo"
 }
 test_lambda(payload_get_salones)
