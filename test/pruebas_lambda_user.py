@@ -2,7 +2,8 @@ import requests
 import json
 
 # URL de la API Lambda
-url = 'https://l1hnvthhsf.execute-api.us-east-1.amazonaws.com/default/prueba'
+url = 'https://l1hnvthhsf.execute-api.us-east-1.amazonaws.com/default/usuarios'
+
 
 def test_lambda(payload):
     headers = {
@@ -22,7 +23,7 @@ payload_create = {
     "mail": "juan.perez@example.com",
     "universidad": "Universidad de Montevideo"
 }
-test_lambda(payload_create)
+#test_lambda(payload_create)
 
 # Prueba de login
 payload_login = {
@@ -38,7 +39,7 @@ payload_get = {
     "mail": "juan.perez@example.com",
     "universidad": "Universidad de Montevideo"
 }
-test_lambda(payload_get)
+#test_lambda(payload_get)
 
 # Prueba de actualización de usuario
 payload_update = {
@@ -49,7 +50,7 @@ payload_update = {
         "nombre": "Juanito"
     }
 }
-test_lambda(payload_update)
+#test_lambda(payload_update)
 
 # Prueba de eliminación de usuario
 payload_delete = {
@@ -57,4 +58,4 @@ payload_delete = {
     "mail": "juan.perez@example.com",
     "universidad": "Universidad de Montevideo"
 }
-test_lambda(payload_delete)
+#test_lambda(payload_delete)
